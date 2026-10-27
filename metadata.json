@@ -1,0 +1,6 @@
+{
+  "name": "Vopple CoC Studio — Code of Conduct Generator",
+  "description": "A clean, minimalist Code of Conduct and contributor template generator for open source projects, built in the VPL Studio aesthetic.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

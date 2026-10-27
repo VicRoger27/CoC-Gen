@@ -1,0 +1,182 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #0f172a;
+  --panel: #1e293b;
+  --border: #334155;
+  --text: #f8fafc;
+  --muted: #94a3b8;
+  --accent: #11FFAA;
+  --accent-hover: #00e699;
+  --accent-text: #0f172a;
+  --success: #22c55e;
+  --danger: #ef4444;
+  --secondary-btn: #334155;
+  --secondary-btn-hover: #475569;
+  --inspect-btn: #3b82f6;
+  --inspect-btn-hover: #2563eb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.5;
+}
+
+/* GitHub & VPL Studio Rendered Markdown Body */
+.markdown-body {
+  width: 100%;
+  flex: 1;
+  min-height: 480px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: #e2e8f0;
+  padding: 1.5rem;
+  overflow-y: auto;
+  font-size: 0.92rem;
+  line-height: 1.65;
+}
+
+.markdown-body h1 {
+  font-size: 1.55rem;
+  font-weight: 700;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.45rem;
+  margin-bottom: 1rem;
+  color: var(--text);
+}
+
+.markdown-body h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+  padding-bottom: 0.3rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: var(--text);
+}
+
+.markdown-body h3 {
+  font-size: 1.02rem;
+  font-weight: 600;
+  margin-top: 1.2rem;
+  margin-bottom: 0.45rem;
+  color: var(--accent);
+}
+
+.markdown-body h4 {
+  font-size: 0.94rem;
+  font-weight: 600;
+  margin-top: 0.95rem;
+  margin-bottom: 0.4rem;
+  color: var(--text);
+}
+
+.markdown-body p {
+  margin-bottom: 0.85rem;
+}
+
+.markdown-body ul {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+  margin-bottom: 0.85rem;
+}
+
+.markdown-body li {
+  margin-bottom: 0.3rem;
+}
+
+.markdown-body strong {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.markdown-body em {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.markdown-body a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.markdown-body code {
+  background: rgba(51, 65, 85, 0.6);
+  color: var(--accent);
+  padding: 0.18rem 0.4rem;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.86em;
+  border: 1px solid rgba(51, 65, 85, 0.8);
+}
+
+.vpl-input {
+  width: 100%;
+  padding: 0.68rem 0.8rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 0.92rem;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.vpl-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 8px rgba(17, 255, 170, 0.28);
+}
+
+.vpl-label {
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+.vpl-textarea {
+  width: 100%;
+  padding: 0.68rem 0.8rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 0.88rem;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  line-height: 1.55;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.vpl-textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 8px rgba(17, 255, 170, 0.28);
+}
+
+/* Custom dark scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary-btn-hover);
+}
