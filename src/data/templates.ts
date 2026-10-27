@@ -1,4 +1,4 @@
-export type DocumentType = 'coc' | 'contact' | 'security' | 'codeowners';
+export type DocumentType = 'coc' | 'contact' | 'security' | 'codeowners' | 'contributing';
 
 export interface CoCSection {
   id: string;
@@ -483,6 +483,106 @@ export const CODEOWNERS_TEMPLATES: GenericTemplate[] = [
 `
   }
 ];
+
+// 5. CONTRIBUTING.md Templates
+export const CONTRIBUTING_TEMPLATES: GenericTemplate[] = [
+  {
+    id: 'standard-contributing',
+    name: 'Standard',
+    summary: 'Comprehensive GitHub workflow guide with branch conventions, bug report structure, and pull request checklist.',
+    content: `# Contributing to {PROJECT_NAME}
+
+First off, thank you for considering contributing to **[{PROJECT_NAME}]({PROJECT_URL})**! It is people like you who make open source such a great place to build, learn, and create.
+
+All contributors are expected to uphold our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). For questions or sensitive inquiries, check [CONTACT.md](CONTACT.md).
+
+---
+
+## Getting Started
+
+1. **Check Existing Issues:** Before opening a new issue or PR, search our [Issue Tracker]({PROJECT_URL}/issues) to see if someone else has already reported or addressed it.
+2. **First Contributions:** Look for issues tagged \`good first issue\` or \`help wanted\` if you are new to the project.
+
+---
+
+## Development Setup
+
+1. Fork and clone the repository:
+   \`\`\`bash
+   git clone {PROJECT_URL}.git
+   cd {PROJECT_NAME}
+   \`\`\`
+2. Install dependencies:
+   \`\`\`bash
+   {DEV_INSTALL_CMD}
+   \`\`\`
+3. Run verification / tests locally:
+   \`\`\`bash
+   {DEV_TEST_CMD}
+   {DEV_LINT_CMD}
+   \`\`\`
+
+---
+
+## How to Report Bugs
+
+When filing a bug report, please include:
+- A clear, descriptive title.
+- Steps to reproduce the behavior (minimal reproduction).
+- Expected vs. actual behavior.
+- Operating system, browser, or runtime version.
+- Any relevant logs, stack traces, or screenshots.
+
+---
+
+## Pull Request Workflow
+
+1. Create a feature branch from \`{MAIN_BRANCH}\`:
+   \`\`\`bash
+   git checkout -b feat/my-new-feature
+   \`\`\`
+2. Write clean, documented code that follows the existing project conventions.
+3. Verify tests and lint checks pass before pushing:
+   \`\`\`bash
+   {DEV_LINT_CMD}
+   \`\`\`
+4. Open a Pull Request against \`{MAIN_BRANCH}\`. Include a concise summary of what changes were made and why.
+
+### Pull Request Checklist
+- [ ] Code follows existing formatting and style conventions.
+- [ ] Tests and linter pass locally.
+- [ ] Documentation has been updated for any user-facing changes.
+- [ ] Related issue numbers are referenced (e.g. \`Fixes #123\`).
+
+---
+
+## Code of Conduct
+
+Participation in this project is governed by [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). By contributing, you agree to abide by its terms.`
+  },
+  {
+    id: 'minimalist-contributing',
+    name: 'Minimalist',
+    summary: 'Concise 4-step contribution guide for small utilities and packages.',
+    content: `# Contributing to {PROJECT_NAME}
+
+Thanks for helping improve **[{PROJECT_NAME}]({PROJECT_URL})**!
+
+## Quick Guide
+
+1. **Discuss:** Open an issue first to discuss significant feature proposals or architectural changes.
+2. **Branch:** Fork the repo and create your branch (\`git checkout -b fix/issue-name\`).
+3. **Verify:** Ensure tests and linting pass locally:
+   \`\`\`bash
+   {DEV_INSTALL_CMD}
+   {DEV_TEST_CMD}
+   \`\`\`
+4. **Submit:** Open a pull request against \`{MAIN_BRANCH}\` describing what was changed.
+
+All contributors must follow our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).`
+  }
+];
+
 
 export const PRESET_CUSTOM_SECTIONS = [
   {

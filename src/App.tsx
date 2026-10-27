@@ -14,6 +14,7 @@ import {
   CONTACT_TEMPLATES,
   SECURITY_TEMPLATES,
   CODEOWNERS_TEMPLATES,
+  CONTRIBUTING_TEMPLATES,
   PRESET_CUSTOM_SECTIONS,
 } from './data/templates';
 
@@ -229,6 +230,13 @@ export default function App() {
     { id: '2', pattern: '/src/ui/', owner: '@opencore/frontend' },
   ]);
 
+  // 5. CONTRIBUTING.md State
+  const [contributingTemplateId, setContributingTemplateId] = useState<string>('standard-contributing');
+  const [mainBranch, setMainBranch] = useState<string>('main');
+  const [devInstallCmd, setDevInstallCmd] = useState<string>('npm install');
+  const [devTestCmd, setDevTestCmd] = useState<string>('npm test');
+  const [devLintCmd, setDevLintCmd] = useState<string>('npm run lint');
+
   // Options
   const [includeStegoTag, setIncludeStegoTag] = useState<boolean>(true);
   const [includeDelimiters, setIncludeDelimiters] = useState<boolean>(true);
@@ -275,6 +283,8 @@ export default function App() {
         return 'SECURITY.md';
       case 'codeowners':
         return 'CODEOWNERS';
+      case 'contributing':
+        return 'CONTRIBUTING.md';
     }
   }, [docType]);
 
@@ -316,6 +326,9 @@ export default function App() {
         base += `\n# Custom Component Rules\n${customRows}\n`;
       }
       docBody = base;
+    } else if (docType === 'contributing') {
+      const template = CONTRIBUTING_TEMPLATES.find((t) => t.id === contributingTemplateId) || CONTRIBUTING_TEMPLATES[0];
+      docBody = template.content;
     }
 
     // Interpolate universal placeholders
@@ -333,6 +346,10 @@ export default function App() {
       .replace(/\{SECURITY_OWNER\}/g, securityOwner)
       .replace(/\{PRIMARY_OWNER\}/g, globalOwner)
       .replace(/\{DOCS_OWNER\}/g, docsOwner)
+      .replace(/\{MAIN_BRANCH\}/g, mainBranch)
+      .replace(/\{DEV_INSTALL_CMD\}/g, devInstallCmd)
+      .replace(/\{DEV_TEST_CMD\}/g, devTestCmd)
+      .replace(/\{DEV_LINT_CMD\}/g, devLintCmd)
       .replace(/\{YEAR\}/g, safeYear)
       .replace(/\{SCOPE_CHANNELS\}/g, safeScope)
       .replace(/\{STEGO_TAG\}/g, invisibleTag);
@@ -369,6 +386,11 @@ export default function App() {
     securityOwner,
     docsOwner,
     customRules,
+    contributingTemplateId,
+    mainBranch,
+    devInstallCmd,
+    devTestCmd,
+    devLintCmd,
     signatureMeta,
     currentFilename,
     includeStegoTag,
@@ -583,14 +605,14 @@ export default function App() {
           {/* Document File Selector Tabs */}
           <div className="flex flex-col gap-1.5">
             <label className="vpl-label text-xs">Target File to Generate</label>
-            <div className="grid grid-cols-2 sm:grid-cols-4 bg-[#0f172a] p-[3px] rounded-lg border border-[#334155] text-xs font-semibold">
+            <div className="grid grid-cols-3 sm:grid-cols-5 bg-[#0f172a] p-[3px] rounded-lg border border-[#334155] text-xs font-semibold gap-0.5">
               <button
                 type="button"
                 onClick={() => {
                   setDocType('coc');
                   refreshSignature();
                 }}
-                className={`py-1.5 px-2 rounded-md transition-all text-center cursor-pointer truncate ${
+                className={`py-1.5 px-1.5 rounded-md transition-all text-center cursor-pointer truncate ${
                   docType === 'coc'
                     ? 'bg-[#1e293b] text-[#11FFAA] shadow-sm'
                     : 'text-[#94a3b8] hover:text-[#f8fafc]'
@@ -604,7 +626,7 @@ export default function App() {
                   setDocType('contact');
                   refreshSignature();
                 }}
-                className={`py-1.5 px-2 rounded-md transition-all text-center cursor-pointer truncate ${
+                className={`py-1.5 px-1.5 rounded-md transition-all text-center cursor-pointer truncate ${
                   docType === 'contact'
                     ? 'bg-[#1e293b] text-[#11FFAA] shadow-sm'
                     : 'text-[#94a3b8] hover:text-[#f8fafc]'
@@ -618,7 +640,7 @@ export default function App() {
                   setDocType('security');
                   refreshSignature();
                 }}
-                className={`py-1.5 px-2 rounded-md transition-all text-center cursor-pointer truncate ${
+                className={`py-1.5 px-1.5 rounded-md transition-all text-center cursor-pointer truncate ${
                   docType === 'security'
                     ? 'bg-[#1e293b] text-[#11FFAA] shadow-sm'
                     : 'text-[#94a3b8] hover:text-[#f8fafc]'
@@ -632,13 +654,27 @@ export default function App() {
                   setDocType('codeowners');
                   refreshSignature();
                 }}
-                className={`py-1.5 px-2 rounded-md transition-all text-center cursor-pointer truncate ${
+                className={`py-1.5 px-1.5 rounded-md transition-all text-center cursor-pointer truncate ${
                   docType === 'codeowners'
                     ? 'bg-[#1e293b] text-[#11FFAA] shadow-sm'
                     : 'text-[#94a3b8] hover:text-[#f8fafc]'
                 }`}
               >
                 CODEOWNERS
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setDocType('contributing');
+                  refreshSignature();
+                }}
+                className={`py-1.5 px-1.5 rounded-md transition-all text-center cursor-pointer truncate ${
+                  docType === 'contributing'
+                    ? 'bg-[#1e293b] text-[#11FFAA] shadow-sm'
+                    : 'text-[#94a3b8] hover:text-[#f8fafc]'
+                }`}
+              >
+                CONTRIBUTING
               </button>
             </div>
           </div>
@@ -1309,6 +1345,87 @@ export default function App() {
                       </button>
                     </div>
                   ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* 5. CONTRIBUTING.MD PANEL */}
+          {docType === 'contributing' && (
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-1">
+                <label className="vpl-label text-xs">Template Standard</label>
+                <select
+                  value={contributingTemplateId}
+                  onChange={(e) => {
+                    setContributingTemplateId(e.target.value);
+                    refreshSignature();
+                  }}
+                  className="vpl-input text-xs py-1.5 cursor-pointer"
+                >
+                  {CONTRIBUTING_TEMPLATES.map((tmpl) => (
+                    <option key={tmpl.id} value={tmpl.id}>
+                      {tmpl.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex flex-col gap-2.5">
+                <div className="flex flex-col gap-1">
+                  <label className="vpl-label text-xs">Primary Branch</label>
+                  <input
+                    type="text"
+                    value={mainBranch}
+                    onChange={(e) => {
+                      setMainBranch(e.target.value);
+                      refreshSignature();
+                    }}
+                    className="vpl-input text-xs py-1.5 font-mono"
+                    placeholder="main"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-1">
+                  <label className="vpl-label text-xs">Dependency Install Command</label>
+                  <input
+                    type="text"
+                    value={devInstallCmd}
+                    onChange={(e) => {
+                      setDevInstallCmd(e.target.value);
+                      refreshSignature();
+                    }}
+                    className="vpl-input text-xs py-1.5 font-mono"
+                    placeholder="npm install"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-1">
+                  <label className="vpl-label text-xs">Test Execution Command</label>
+                  <input
+                    type="text"
+                    value={devTestCmd}
+                    onChange={(e) => {
+                      setDevTestCmd(e.target.value);
+                      refreshSignature();
+                    }}
+                    className="vpl-input text-xs py-1.5 font-mono"
+                    placeholder="npm test"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-1">
+                  <label className="vpl-label text-xs">Linting Command</label>
+                  <input
+                    type="text"
+                    value={devLintCmd}
+                    onChange={(e) => {
+                      setDevLintCmd(e.target.value);
+                      refreshSignature();
+                    }}
+                    className="vpl-input text-xs py-1.5 font-mono"
+                    placeholder="npm run lint"
+                  />
                 </div>
               </div>
             </div>
